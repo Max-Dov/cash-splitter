@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     mode: 'development',
     target: 'node',
-    entry: './src/bot.ts',
+    entry: './src/main.ts',
     resolve: {
         extensions: ['.ts', '.js']
     },
