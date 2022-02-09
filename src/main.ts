@@ -1,16 +1,43 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
 import chalk from 'chalk';
-import { Bot } from 'grammy';
+import {Bot} from 'grammy';
+import fs from 'fs-extra';
+import {Storage} from './models/storage.model';
+import {Logger} from './utils/loger.util';
 
-// Create a bot object
-const bot = new Bot(process.env.HTTP_API_TOKEN || '');
+/**
+ * Loading environment variables into process.
+ */
+dotenv.config();
+Logger.info('env variables:', chalk.green('loaded'));
 
-bot.command('start', (ctx) => ctx.reply('Ready to count cash moneys!'));
+/**
+ * Loading or creating highly efficient persistent JSON database from disc.
+ */
+const messagesStorageDir = process.env.MESSAGES_STORAGE_DIR || './build/messages.json';
+fs.pathExists(messagesStorageDir)
+    .then(exists => exists
+        ? fs.readJson(messagesStorageDir)
+        : fs.writeJson(messagesStorageDir, {} as Storage).then(() => fs.readJson(messagesStorageDir)))
+    .then(chatMessages => {
+        Logger.info('chat messages:', chalk.green('loaded'));
+        /**
+         * Declaring bot protocols.
+         */
+        const bot = new Bot(process.env.HTTP_API_TOKEN || '');
 
-// Register listeners to handle messages
-bot.on('message:text', (ctx: any) => ctx.reply('Echo: ' + ctx.message.text));
+        bot.on('message', (ctx) => {
+            console.log(ctx.message.text);
+        });
 
-// Start the bot (using long polling)
-bot.start();
+        bot.hears(process.env.MESSAGE_COUNT_REQUEST_REGEXP || '', ({message, senderChat, msg}) => {
+            console.info({message, senderChat, msg});
+        });
 
-console.log(chalk.red.bold('I woke up'));
+        Logger.info('bot protocols:', chalk.green('declared'));
+        /**
+         * Waking up bot.
+         */
+        bot.start().catch(Logger.error);
+        Logger.info('bot status:', chalk.green('ready and working'));
+    });

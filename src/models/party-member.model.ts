@@ -7,11 +7,11 @@ export interface PartyMember {
    */
   name: string;
   /**
-   * Total money spent by member on it's own purchases.
+   * Total money spent by member on its own purchases.
    */
   totalSpent: number;
   /**
-   * Member share in party. Bigger the share - bigger member would cashback to party.
+   * Member shares in party. Bigger the share - bigger member would cashback to party.
    */
-  share: number;
+  shares: number;
 }

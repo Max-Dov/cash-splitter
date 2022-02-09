@@ -15,5 +15,5 @@ export interface Party {
   /**
    * Sum of shares field from all party members. 
    */
-  totalShares: PartyMember['share'];
+  totalShares: PartyMember['shares'];
 }
