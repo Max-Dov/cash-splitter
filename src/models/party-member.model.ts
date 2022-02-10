@@ -7,6 +7,11 @@ export interface PartyMember {
    */
   name: string;
   /**
+   * Username to call user by. E.g. 'max_dov'.
+   * TODO implement linking user to it's username
+   */
+  username: string;
+  /**
    * Total money spent by member on its own purchases.
    */
   totalSpent: number;

@@ -35,9 +35,16 @@ export class Logger {
         Logger.timeNow(),
         ...messages,
     );
+
+    static command = (...messages: any[]) => console.log(
+        chalk.blue(LogTypes.COMMAND),
+        Logger.timeNow(),
+        ...messages,
+    );
 }
 
 enum LogTypes {
     INFO = 'INFO',
-    ERROR = 'ERROR'
+    ERROR = 'ERROR',
+    COMMAND = 'COMMAND'
 }
