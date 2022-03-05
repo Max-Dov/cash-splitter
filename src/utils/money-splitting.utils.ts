@@ -18,10 +18,12 @@ export const resolvePartyCashback = (members: PartyMember[]): MemberCashback[] =
         name,
         totalSpent: memberTotalSpent,
         shares,
+        loanToParty,
+        totalLoaned,
     }) => {
         const memberToPartySharesRatio = shares / partyTotalShares;
-        const cashback = memberTotalSpent * (1 - memberToPartySharesRatio);
-        const cashin = (partyTotalSpent - memberTotalSpent) * memberToPartySharesRatio;
+        const cashback = memberTotalSpent * (1 - memberToPartySharesRatio) + (totalLoaned || 0);
+        const cashin = (partyTotalSpent - memberTotalSpent) * memberToPartySharesRatio + (loanToParty || 0);
         return {name, cashback, cashin};
     });
 };

@@ -1,0 +1,16 @@
+{
+  "commands": {
+    "COUNT_MONEY": "Cash splitter to work!",
+    "SET_SHARE": "^[0-9]+( is my share).*$",
+    "ADD_MONEY_SPENT": "^[0-9]+( .*)*$"
+  },
+  "messages": {
+    "COUNT_MONEY_RESPONSE": "Okay boss, figuring out money split..",
+    "COUNT_MONEY_RESULTS": "That is what I have got:\n{partyCashback}\nThat is it!",
+    "SET_SHARE_RESPONSE": "Got it! {username} share set to {share}",
+    "ADD_MONEY_SPENT_RESPONSE": "Got it! {username} well spent {spentAmount}",
+    "USERNAME_SHOULD_PAY_TO_GROUP": "{username} should pay {cashin} to group",
+    "USERNAME_GETS_CASHBACK_FROM_GROUP": "{username} gets {cashback} from group",
+    "USERNAME_IS_EVEN_WITH_EVERYONE": "{username} is even with everyone!"
+  }
+}

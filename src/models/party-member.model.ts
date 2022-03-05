@@ -19,4 +19,12 @@ export interface PartyMember {
    * Member shares in party. Bigger the share - bigger member would cashback to party.
    */
   shares: number;
+  /**
+   * Total money loaned to party members.
+   */
+  loanToParty?: number;
+  /**
+   * Total money loaned from party members.
+   */
+  totalLoaned?: number;
 }
