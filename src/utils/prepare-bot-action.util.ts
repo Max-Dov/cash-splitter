@@ -7,10 +7,18 @@ import {Localizer} from './localizer.util';
 
 /**
  * Wraps bot command and command handler into Bot Action. Logs command name.
+ * @param command - BotCommandKey to load command from localization file.
+ * @param commandHandler - bot command handler.
+ * @param commandRegExp - command regexp to use instead command from localization file.
+ * @throws exception if command extraction from localizer goes wrong.
  */
-export const prepareBotAction = (command: BotCommandsKeys, commandHandler: CommandHandler): BotAction =>
+export const prepareBotAction = (
+    command: BotCommandsKeys,
+    commandHandler: CommandHandler,
+    commandRegExp?: RegExp,
+): BotAction | never =>
     [
-        Localizer.command(command),
+        commandRegExp || Localizer.command(command),
         ctx => {
             Logger.command('Hearing', chalk.bgBlue(command), 'command!');
             try {

@@ -30,11 +30,11 @@ export class Localizer {
     static message = (
         messageKey: string,
         placeholders?: { [key in string]: string | number },
-    ): string => {
+    ): string | never => {
         const message = Localizer.localizationData?.messages[messageKey];
         if (!message) {
             Logger.error('Could not find message in localizationData!', chalk.bgRed({message}));
-            throw Error('Could not find message in localizationData!')
+            throw Error('Could not find message in localizationData!');
         }
         return placeholders
             ? Localizer.replacePlaceholders(message, placeholders)
@@ -46,13 +46,21 @@ export class Localizer {
      * @param commandKey - string key from localization file; e.g. "SET_SHARE"
      * @throws Error if command does not exist in localization file.
      */
-    static command = (commandKey: string): RegExp => {
+    static command = (commandKey: string): RegExp | never =>
+        new RegExp(Localizer.commandAsString(commandKey), 'i');
+
+    /**
+     * Loads bot command as string from localization file by its key.
+     * @param commandKey - string key from localization file; e.g. "SET_SHARE"
+     * @throws Error if command does not exist in localization file.
+     */
+    static commandAsString = (commandKey: string): string | never => {
         const command = Localizer.localizationData?.commands[commandKey];
         if (!command) {
             Logger.error('Could not find command in localizationData!', {commandKey});
-            throw Error('Could not find command in localizationData!')
+            throw Error('Could not find command in localizationData!');
         }
-        return new RegExp(command, 'i');
+        return command;
     };
 
     /**
@@ -68,7 +76,7 @@ export class Localizer {
             (resultMessage, placeholder) =>
                 resultMessage.replace(`{${placeholder}}`, String(placeholders[placeholder])),
             message,
-        )
+        );
 }
 
 /**

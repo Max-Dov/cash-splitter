@@ -14,20 +14,20 @@ import {BotAction} from '../models/bot-action.model';
 export const countMoneyBotActionCreator = (): BotAction => prepareBotAction(
     BotCommandsKeys.COUNT_MONEY,
     ctx => {
-        ctx.reply(Localizer.message(BotMessagesKeys.COUNT_MONEY_RESPONSE))
-            .then(() => {
-                const partyCashback = resolvePartyCashback(Storage.storage.partyMembers)
-                    .map(prepareSentenceFromCashback)
-                    .join('\n');
-                const replyMessage = Localizer.message(BotMessagesKeys.COUNT_MONEY_RESULTS, {partyCashback});
-                ctx.reply(replyMessage)
-                    .catch((error) => {
-                        throw Error(error);
-                    });
-            })
-            .catch((error) => {
-                throw Error(error);
-            });
+        // ctx.reply(Localizer.message(BotMessagesKeys.COUNT_MONEY_RESPONSE))
+        //     .then(() => {
+        //         const partyCashback = resolvePartyCashback(Storage.storage.partyMembers)
+        //             .map(prepareSentenceFromCashback)
+        //             .join('\n');
+        //         const replyMessage = Localizer.message(BotMessagesKeys.COUNT_MONEY_RESULTS, {partyCashback});
+        //         ctx.reply(replyMessage)
+        //             .catch((error) => {
+        //                 throw Error(error);
+        //             });
+        //     })
+        //     .catch((error) => {
+        //         throw Error(error);
+        //     });
     },
 );
 

@@ -6,9 +6,9 @@ import { PartyMember } from "./party-member.model";
  */
 export interface MemberCashback {
   /**
-   * Display name. E.g. 'Max'.
+   * Username to call user by. E.g. '@max_dov'.
    */
-  name: PartyMember['name'];
+  name: PartyMember['username'];
   /**
    * Cashback amount for member.
    */
@@ -18,3 +18,5 @@ export interface MemberCashback {
    */
   cashin: PartyMember['totalSpent'];
 }
+
+type A = Required<PartyMember['totalSpent']>

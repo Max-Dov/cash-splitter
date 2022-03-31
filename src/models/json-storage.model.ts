@@ -1,9 +1,19 @@
+import {Party} from './party.model';
+
 /**
  * Storage structure.
  * Note: it IS mutated during application use.
  */
-import {PartyMember} from './party-member.model';
-
 export interface JsonStorage {
-    partyMembers: PartyMember[]
+    /**
+     * Set of <chatId, Party> pairs.
+     */
+    chats: {
+       [chatId in string]?: Party
+    }
+    /**
+     * List of supported currencies, e.g. "$", "руб". Can be anything members are calling their money.
+     */
+    supportedCurrencies: string[];
+    defaultCurrency: string;
 }
