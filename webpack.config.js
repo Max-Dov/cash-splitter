@@ -25,7 +25,10 @@ module.exports = {
                             ['@babel/preset-env'],
                             ['@babel/preset-typescript'],
                         ],
-                        plugins: ["@babel/plugin-proposal-class-properties"],
+                        plugins: [
+                            "@babel/plugin-proposal-class-properties",
+                            // "@babel/plugin-transform-runtime" - TODO enable if having issues with async handlers
+                        ],
                     }
                 }
             }

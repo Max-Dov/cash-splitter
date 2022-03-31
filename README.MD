@@ -1,4 +1,15 @@
-# Hello from 1st commit
+# Cash Splitter
+
+Telegram bot capable of splitting bills among friends based on everyone participation amount.
+
+## Configuration
+
+Following can be configured via config files under `/config` folder:
+
+* Features: most bot features can be switched to enabled or disabled state. By default, all features are enabled.
+* Translations: anything bot says can be changed via `localization.json` file.
+
+## Use cases
 
 ## Technologies
 

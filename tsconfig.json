@@ -3,11 +3,9 @@
     "noImplicitAny": true,
     "strict": true,
     "module": "commonjs",
-    "target": "es5",
+    "target": "ES2021",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-
     "outDir": "build",
     "sourceMap": true,
   },

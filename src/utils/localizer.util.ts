@@ -6,7 +6,7 @@ import chalk from 'chalk';
  * Provides static methods to utilize localisation strings.
  */
 export class Localizer {
-    private static localizationData: LocalizationData;
+    private static localizationData: LocalizationData | null;
 
     /**
      * Loads localization file into Localizer. Expected to be called only once in the app.
@@ -37,11 +37,7 @@ export class Localizer {
             throw Error('Could not find message in localizationData!')
         }
         return placeholders
-            ? Object.keys(placeholders).reduce(
-                (resultMessage, placeholder) =>
-                    resultMessage.replace(`{${placeholder}}`, String(placeholders[placeholder])),
-                message,
-            )
+            ? Localizer.replacePlaceholders(message, placeholders)
             : message;
     };
 
@@ -58,6 +54,21 @@ export class Localizer {
         }
         return new RegExp(command, 'i');
     };
+
+    /**
+     * Replaces placeholders within string with actual values. E.g. '{name} joined' -> 'Max joined'.
+     * @param message - string with placeholders
+     * @param placeholders - object with placeholders replacement strings; e.g. {username: 'Max', share: 5}
+     */
+    static replacePlaceholders = (
+        message: string,
+        placeholders: { [key in string]: string | number }
+    ): string =>
+        Object.keys(placeholders).reduce(
+            (resultMessage, placeholder) =>
+                resultMessage.replace(`{${placeholder}}`, String(placeholders[placeholder])),
+            message,
+        )
 }
 
 /**

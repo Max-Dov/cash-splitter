@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import {Bot} from 'grammy';
+import { Bot } from 'grammy'
 import {Logger} from './utils/logger.util';
 import {Localizer} from './utils/localizer.util';
 import {Storage} from './utils/storage.util';
@@ -8,8 +8,11 @@ import {RegExps} from './constants/regexps.enum';
 import {writeJson} from 'fs-extra';
 
 // TODO store member spent info based on chat member is in
+// TODO add feature to expand currencies
+// TODO add feature to react to message once bot has parsed it
+// TODO add a way to customize "money spent" message via strings templating
 // TODO add loans processing feature
-// TODO add debug mode feature when bot will send error messages to chat once having error.
+// TODO add debug mode feature when bot will send error messages to chat or bot owner once having error
 
 const startTime = new Date().getTime();
 let isStartupSuccessful = true;
@@ -105,7 +108,7 @@ Promise.all([localizerInitPromise, storageInitPromise])
                     .catch(error => Logger.error('Could not write to storage file.', {error}));
             });
 
-            bot.on('message', ({message}) => {
+            bot.command('spend', ({message}) => {
                 Logger.info('Some message just passing by.', {message});
             });
 
