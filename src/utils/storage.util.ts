@@ -12,14 +12,21 @@ export class Storage {
 
     /**
      * Loads storage file into Storage. Expected to be called only once in the app.
-     * @param filePath - file path containing JSON storage
      */
-    static loadStorage = (filePath: string): Promise<void> =>
-        pathExists(filePath)
+    static loadStorage = (): Promise<void> => {
+        const filePath = process.env.STORAGE_DIR || './build/storage.json';
+        return pathExists(filePath)
             .then(exists => exists
                 ? readJson(filePath)
-                : writeJson(filePath, JSON_STORAGE_INIT).then(() => readJson(filePath)))
+                : writeJson(filePath, JSON_STORAGE_INIT, {spaces: 2}).then(() => readJson(filePath)))
             .then((storage: JsonStorage) => {
                 Storage.storage = storage;
             });
+    };
+
+
+    static saveStorage = (): Promise<void> => {
+        const filePath = process.env.STORAGE_DIR || './build/storage.json';
+        return writeJson(filePath, Storage.storage, {spaces: 2});
+    };
 }

@@ -2,7 +2,7 @@
   "commands": {
     "COUNT_MONEY": "Cash splitter to work!",
     "SET_SHARE": "^[0-9]+( is my share).*$",
-    "ADD_MONEY_SPENT": "^(@[a-z0-9_]+\\s+)?([0-9]+\\s*)((?:{currencies})\\s+)?((?:-@[a-z0-9_]+\\s+)+)?((?:\\@[a-z0-9_]+\\s+)+)?(.+)$"
+    "ADD_MONEY_SPENT": "^(@[a-z0-9_]+\\s+)?([0-9]+\\s*)((?:{currencies})\\s+)?((?:-@[a-z0-9_]+\\s+)+)?((?:\\@[a-z0-9_]+\\s+)+)?(.+)?$"
   },
   "messages": {
     "COUNT_MONEY_RESPONSE": "Okay boss, figuring out money split..",

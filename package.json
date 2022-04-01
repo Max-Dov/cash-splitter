@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --config ./webpack.config.js",
     "start": "node ./build/bundle.js",
-    "restart": "npm run build && npm run start"
+    "restart": "npm run build && npm run start",
+    "restart with no db": "rm ./build/storage.json && npm run restart"
   },
   "author": "https://github.com/Max-Dov",
   "license": "AGPL",

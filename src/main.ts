@@ -4,17 +4,17 @@ import {Logger} from './utils/logger.util';
 import {Localizer} from './utils/localizer.util';
 import {Storage} from './utils/storage.util';
 import {countMoneyBotActionCreator, setShareBotActionCreator} from './bot-actions';
-import {RegExps} from './constants/regexps.enum';
-import {writeJson} from 'fs-extra';
 import {readMoneySpentBotActionCreator} from './bot-actions/read-money-spent.bot-action';
 
 // TODO store member spent info based on chat member is in
 // TODO add feature to expand currencies
 // TODO add feature to react to message once bot has parsed it
+// TODO add feature to reset chat info
 // TODO add a way to customize "money spent" message via strings templating
 // TODO add feature to process loans
 // TODO add feature of debug mode when bot will send error messages to chat or bot owner once having error
 // TODO add feature to support message editing
+// TODO add feature to calculate payouts only when command to count money is sent (shares might be not updated before that)
 const startTime = new Date().getTime();
 let isStartupSuccessful = true;
 
@@ -48,8 +48,7 @@ const localizerInitPromise = Localizer.loadLocalization('./config/localization.d
 /**
  * Loading or creating highly efficient persistent JSON database from disc.
  */
-const storageDir = process.env.STORAGE_DIR || './build/storage.json';
-const storageInitPromise = Storage.loadStorage(storageDir)
+const storageInitPromise = Storage.loadStorage()
     .then(() => Logger.goodInfo('JSON storage: loaded!'))
     .catch((error) => {
         Logger.error('JSON storage initialization/load failed.', error);

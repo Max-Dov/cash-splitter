@@ -7,5 +7,7 @@ export interface Party {
     /**
      * Party members who participated at least in one transaction.
      */
-    partyMembers: PartyMember[];
+    partyMembers: {
+        [key in PartyMember['username']]: PartyMember
+    };
 }

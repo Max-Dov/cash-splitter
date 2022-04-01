@@ -37,20 +37,21 @@ export const countMoneyBotActionCreator = (): BotAction => prepareBotAction(
  * @param cashback - cashback from party
  * @param cashin - money amount to return to party
  */
-const prepareSentenceFromCashback = ({name, cashback, cashin}: MemberCashback) => {
-    const isGettingCashback = cashback >= cashin;
-    const preciseCash = Math.abs(cashback - cashin);
-    const cash = Math.trunc(preciseCash * 100) / 100;
-    if (cash === 0) {
-        return Localizer.message(BotMessagesKeys.USERNAME_IS_EVEN_WITH_EVERYONE, {username: name});
-    }
-    return isGettingCashback
-        ? Localizer.message(BotMessagesKeys.USERNAME_GETS_CASHBACK_FROM_GROUP, {
-            username: name,
-            cashback: cash,
-        })
-        : Localizer.message(BotMessagesKeys.USERNAME_SHOULD_PAY_TO_GROUP, {
-            username: name,
-            cashin: cash,
-        });
+const prepareSentenceFromCashback = ({name, cashback, cashin}: MemberCashback): string => {
+    // const isGettingCashback = cashback >= cashin;
+    // const preciseCash = Math.abs(cashback - cashin);
+    // const cash = Math.trunc(preciseCash * 100) / 100;
+    // if (cash === 0) {
+    //     return Localizer.message(BotMessagesKeys.USERNAME_IS_EVEN_WITH_EVERYONE, {username: name});
+    // }
+    // return isGettingCashback
+    //     ? Localizer.message(BotMessagesKeys.USERNAME_GETS_CASHBACK_FROM_GROUP, {
+    //         username: name,
+    //         cashback: cash,
+    //     })
+    //     : Localizer.message(BotMessagesKeys.USERNAME_SHOULD_PAY_TO_GROUP, {
+    //         username: name,
+    //         cashin: cash,
+    //     });
+    return 'nothin!'
 };
