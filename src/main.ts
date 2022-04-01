@@ -6,15 +6,16 @@ import {Storage} from './utils/storage.util';
 import {countMoneyBotActionCreator, setShareBotActionCreator} from './bot-actions';
 import {readMoneySpentBotActionCreator} from './bot-actions/read-money-spent.bot-action';
 
-// TODO store member spent info based on chat member is in
 // TODO add feature to expand currencies
-// TODO add feature to react to message once bot has parsed it
 // TODO add feature to reset chat info
+// TODO add feature to display owedItems via bot.
 // TODO add a way to customize "money spent" message via strings templating
 // TODO add feature to process loans
 // TODO add feature of debug mode when bot will send error messages to chat or bot owner once having error
 // TODO add feature to support message editing
 // TODO add feature to calculate payouts only when command to count money is sent (shares might be not updated before that)
+
+// TODO bug - if message is forwarded from user who hides their link, then it won't pick that user up.
 const startTime = new Date().getTime();
 let isStartupSuccessful = true;
 

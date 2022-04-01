@@ -12,16 +12,20 @@ export interface PartyMember {
    * Total money spent by member.
    */
   totalSpent: {
-    [currencyName in JsonStorage['supportedCurrencies'][number]]: number
+    [currencyName in JsonStorage['supportedCurrencies'][number]['currencyName']]: number
   };
   /**
    * Total money member ows to company.
    */
   totalOwed: {
-    [currencyName in JsonStorage['supportedCurrencies'][number]]: number
+    [currencyName in JsonStorage['supportedCurrencies'][number]['currencyName']]: number
   };
   /**
    * Member shares in party. Bigger the share - bigger member would cashback to party.
    */
   shares: number;
+  /**
+   * Items that were counted towards member.
+   */
+  obtainedItems: string[];
 }

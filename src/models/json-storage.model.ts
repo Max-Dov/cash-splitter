@@ -12,8 +12,18 @@ export interface JsonStorage {
        [chatId in string]?: Party
     }
     /**
-     * List of supported currencies, e.g. "$", "руб". Can be anything members are calling their money.
+     * List of supported currencies. Can be anything members are calling their money.
      */
-    supportedCurrencies: string[];
-    defaultCurrency: string;
+    supportedCurrencies: {
+        currencyName: string; // e.g. "$", "руб"
+        currencyToUsd: number; // how much 1 unit of currency costs in dollar.
+    }[];
+    /**
+     * Default currency name if member does not specify currency.
+     */
+    defaultCurrencyName: JsonStorage['supportedCurrencies'][number]['currencyName'];
+    /**
+     * Payout currency name used by bot to display payouts.
+     */
+    payoutCurrencyName: JsonStorage['supportedCurrencies'][number]['currencyName'];
 }

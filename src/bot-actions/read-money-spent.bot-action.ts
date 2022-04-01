@@ -5,7 +5,6 @@ import {Storage} from '../utils/storage.util';
 import {Logger} from '../utils/logger.util';
 import {prepareBotAction} from '../utils/prepare-bot-action.util';
 import {verifyCtxFields} from '../utils/verify-ctx-fields.util';
-import {PartyMember} from '../models/party-member.model';
 import {bgYellow} from 'chalk';
 
 export const readMoneySpentBotActionCreator = (): BotAction | never => {
@@ -13,7 +12,12 @@ export const readMoneySpentBotActionCreator = (): BotAction | never => {
      * Currencies are dynamically changing and placed in Storage, so when bot starts it has to look into Storage.
      */
     const commandWithPlaceholder = Localizer.commandAsString(BotCommandsKeys.ADD_MONEY_SPENT);
-    const currencies = Storage.storage.supportedCurrencies.join('|');
+    const currencies = Storage.storage.supportedCurrencies.map(({currencyName}) => {
+        if (currencyName === '$') {
+            return '\\$'
+        }
+        return currencyName;
+    }).join('|');
     const regexpCommand = new RegExp(
         Localizer.replacePlaceholders(commandWithPlaceholder, {currencies})
     );
@@ -21,22 +25,26 @@ export const readMoneySpentBotActionCreator = (): BotAction | never => {
         BotCommandsKeys.ADD_MONEY_SPENT,
         (ctx) => {
             const [
+                // TODO use named groups instead
                 , // whole message
                 spenderName, // e.g. '@max'
                 amountSpent, // e.g. '25'
                 messageCurrency, // e.g. '$'
                 excludedMembers, // e.g. '-@mike -@michelle'
                 includedMembers, // e.g. '@mark @marie'
+                note, // e.g. 'pizza to everyone'
             ] = ctx.match as RegExpMatchArray;
             // TODO trim "via regexp"
-            const currency = messageCurrency?.trim() || Storage.storage.defaultCurrency;
+            const storage = Storage.storage;
+            const currency = messageCurrency?.trim() || storage.defaultCurrencyName;
             const message = ctx.message;
+            const messageId = message?.message_id;
             const chatId = message?.chat.id;
-            const senderUsername = message?.from?.username;
-            verifyCtxFields({chatId, senderUsername}, ctx);
+            const senderUsername = message?.forward_from?.username || message?.from?.username;
+            verifyCtxFields({chatId, senderUsername, messageId}, ctx);
 
             // extract chat
-            const chats = Storage.storage.chats;
+            const chats = storage.chats;
             let chat = chats[String(chatId)];
             if (!chat) {
                 chat = {partyMembers: {}};
@@ -49,12 +57,13 @@ export const readMoneySpentBotActionCreator = (): BotAction | never => {
             const spenderUsername = spenderName?.trim() || ('@' + senderUsername);
             let spender = partyMembers[spenderUsername];
             if (!spender) {
-                Logger.info('New party member:', bgYellow(spenderUsername))
+                Logger.info('New party member:', bgYellow(spenderUsername));
                 spender = {
                     username: spenderUsername,
                     totalSpent: {[currency]: 0},
                     totalOwed: {},
                     shares: 1,
+                    obtainedItems: [],
                 };
                 partyMembers[spenderUsername] = spender;
             }
@@ -91,45 +100,33 @@ export const readMoneySpentBotActionCreator = (): BotAction | never => {
                     .forEach(memberUsername => {
                         let member = partyMembers[memberUsername];
                         if (!member) {
-                            Logger.info('New party member:', bgYellow(memberUsername))
+                            Logger.info('New party member:', bgYellow(memberUsername));
                             member = {
                                 username: memberUsername,
                                 totalSpent: {[currency]: 0},
                                 totalOwed: {},
                                 shares: 1,
+                                obtainedItems: [],
                             };
-                            partyMembers[memberUsername] = member
+                            partyMembers[memberUsername] = member;
                         }
-                        oweMembersMap.set(memberUsername, member)
-                    })
+                        oweMembersMap.set(memberUsername, member);
+                    });
             }
             let oweMembersShareSum = 0;
             for (const [, member] of oweMembersMap) {
-                oweMembersShareSum += member.shares
+                oweMembersShareSum += member.shares;
             }
             for (const [, member] of oweMembersMap) {
-                member.totalOwed[currency] = (member.totalOwed[currency] || 0) + Number(amountSpent) / oweMembersShareSum * member.shares
+                const owedAmount = Math.trunc(Number(amountSpent) / oweMembersShareSum * member.shares * 100) / 100;
+                member.obtainedItems.push(`${owedAmount}${currency} ${note}`);
+                member.totalOwed[currency] = (member.totalOwed[currency] || 0) + owedAmount;
             }
             Storage.saveStorage()
                 .then(() => {
-                    ctx.api.sendChatAction(chatId as number, 'typing');
                     Logger.info('Successfully saved money spent info!');
                 })
                 .catch(error => Logger.error('Could not write to storage file.', {error}));
-
-            // let partyMember = Storage.storage.partyMembers.find(member => member.username === username);
-            // if (!partyMember) {
-            //     partyMember = {
-            //         name: message.from.first_name,
-            //         username,
-            //         shares: 0,
-            //         totalSpent: 0,
-            //     };
-            //     Storage.storage.partyMembers.push(partyMember);
-            // }
-            // partyMember.totalSpent += Number(spentAmountArray[0]);
-            // writeJson(storageDir, Storage.storage)
-
         },
         regexpCommand
     );

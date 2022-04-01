@@ -1,6 +1,8 @@
 import {pathExists, readJson} from 'fs-extra';
 import {Logger} from './logger.util';
 import chalk from 'chalk';
+import {BotMessagesKeys} from '../constants/bot-messages-keys.enum';
+import {BotCommandsKeys} from '../constants/bot-commands-keys.enum';
 
 /**
  * Provides static methods to utilize localisation strings.
@@ -28,7 +30,7 @@ export class Localizer {
      * @throws Error if message does not exist in localization file.
      */
     static message = (
-        messageKey: string,
+        messageKey: BotMessagesKeys,
         placeholders?: { [key in string]: string | number },
     ): string | never => {
         const message = Localizer.localizationData?.messages[messageKey];
@@ -46,7 +48,7 @@ export class Localizer {
      * @param commandKey - string key from localization file; e.g. "SET_SHARE"
      * @throws Error if command does not exist in localization file.
      */
-    static command = (commandKey: string): RegExp | never =>
+    static command = (commandKey: BotCommandsKeys): RegExp | never =>
         new RegExp(Localizer.commandAsString(commandKey), 'i');
 
     /**
@@ -54,7 +56,7 @@ export class Localizer {
      * @param commandKey - string key from localization file; e.g. "SET_SHARE"
      * @throws Error if command does not exist in localization file.
      */
-    static commandAsString = (commandKey: string): string | never => {
+    static commandAsString = (commandKey: BotCommandsKeys): string | never => {
         const command = Localizer.localizationData?.commands[commandKey];
         if (!command) {
             Logger.error('Could not find command in localizationData!', {commandKey});

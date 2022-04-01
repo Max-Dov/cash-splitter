@@ -46,6 +46,12 @@ export class Logger {
         ...messages,
     );
 
+    static warning = (...messages: any[]) => console.warn(
+        chalk.bold.bgYellow(LogTypes.WARNING),
+        chalk.bgGray(Logger.timeNow()),
+        ...messages,
+    );
+
     static command = (...messages: any[]) => console.log(
         chalk.bold.bgBlue(LogTypes.COMMAND),
         chalk.bgGray(Logger.timeNow()),
@@ -56,5 +62,6 @@ export class Logger {
 enum LogTypes {
     INFO = 'INFO',
     ERROR = 'ERROR',
+    WARNING = 'WARNING',
     COMMAND = 'COMMAND'
 }
