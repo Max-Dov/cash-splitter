@@ -68,8 +68,8 @@ Promise.all([localizerInitPromise, storageInitPromise])
                 bot.hears(...countMoneyBotActionCreator());
                 bot.hears(...setShareBotActionCreator());
                 bot.hears(...readMoneySpentBotActionCreator());
-                bot.on('message', ({message}) => {
-                    Logger.info('Some message just passing by.', {message});
+                bot.on('message', () => {
+                    Logger.info('Some message just passing by.');
                 });
                 Logger.goodInfo('Bot protocols: declared!');
             }

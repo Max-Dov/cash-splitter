@@ -119,7 +119,7 @@ export const readMoneySpentBotActionCreator = (): BotAction | never => {
             }
             for (const [, member] of oweMembersMap) {
                 const owedAmount = Math.trunc(Number(amountSpent) / oweMembersShareSum * member.shares * 100) / 100;
-                member.obtainedItems.push(`${owedAmount}${currency} ${note}`);
+                member.obtainedItems.push(`${owedAmount}${currency} ${note || 'something mysterious with no name'}`);
                 member.totalOwed[currency] = (member.totalOwed[currency] || 0) + owedAmount;
             }
             Storage.saveStorage()
