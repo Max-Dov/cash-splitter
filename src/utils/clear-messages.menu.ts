@@ -30,7 +30,7 @@ const deleteMessagesFromChat = (ctx: Context, areBotMessagesToRemove: boolean): 
     verifyCtxFields({chatId}, ctx);
     const chat = Storage.storage.chats[String(chatId)];
     if (!chat) {
-        Logger.error('Could not delete bot messages due to chat', bgRed(chatId), 'missing!');
+        Logger.error('Could not delete messages due to chat', bgRed(chatId), 'missing!');
         throw Error('Could not find chat by chatId!');
     }
     const messagesDeletionPromises = deleteMessages(
@@ -39,13 +39,27 @@ const deleteMessagesFromChat = (ctx: Context, areBotMessagesToRemove: boolean): 
         ctx,
     );
     return Promise.all(messagesDeletionPromises).then(() => {
-        chat.processedMessagesIds = [];
+        chat[areBotMessagesToRemove ? 'botMessageIds' : 'processedMessagesIds'] = [];
         Logger.info('Successfully deleted messages from chat', bgGreen(chatId));
     }).catch(error => {
         Logger.error('Something went wrong when attempting to delete messages.', bgRed(error.message));
         throw new Error('Could not delete messages!');
     });
 };
+
+const forgetMessages = (ctx: Context): void => {
+    const chatId = ctx.update.callback_query?.message?.chat.id;
+    verifyCtxFields({chatId}, ctx);
+    const chat = Storage.storage.chats[String(chatId)];
+    if (!chat) {
+        Logger.error('Could not forget bot messages due to chat', bgRed(chatId), 'missing!');
+        throw Error('Could not find chat by chatId!');
+    }
+    chat.processedMessagesIds = [];
+    chat.botMessageIds = [];
+    Logger.info('Successfully forgot messages from chat', bgGreen(chatId));
+    closeMenu(ctx);
+}
 
 const closeMenu = (ctx: Context): void => {
     const message = ctx.update.callback_query?.message;
@@ -66,7 +80,7 @@ export const clearMessagesMenu = new Menu('clear-messages-menu')
     .row()
     .text('Delete bot messages', deleteBotMessages)
     .row()
-    .text('Make bot forget all messages')
+    .text('Make bot forget all messages', forgetMessages)
     .row()
     .text('Do nothing', closeMenu);
 
