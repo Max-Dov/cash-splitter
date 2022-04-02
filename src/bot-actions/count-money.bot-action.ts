@@ -31,6 +31,9 @@ export const countMoneyBotActionCreator = (): BotAction => prepareBotAction(
                 const payoutStrings = Object.entries(chat.partyMembers || {})
                     .map(([username, member]) => {
                         const {payoutCurrencyName, supportedCurrencies} = Storage.storage;
+                        /**
+                         * Calculate net for every currency by calculating totalSpent - totalOwed
+                         */
                         const currencyToMoneyNet = new Map<string, number>(); // currency to money net
                         Object.entries(member.totalSpent || {})
                             .forEach(([currency, totalSpent]) => {
@@ -41,6 +44,9 @@ export const countMoneyBotActionCreator = (): BotAction => prepareBotAction(
                                 const amountSpent = member.totalSpent[currency] || 0;
                                 currencyToMoneyNet.set(currency, amountSpent - owedAmount);
                             });
+                        /**
+                         * Figure out payout amount from net amount for every currency.
+                         */
                         const payoutAmount = [...currencyToMoneyNet.entries()]
                             .map(([currency, netAmount]) => {
                                 const supportedCurrency = supportedCurrencies
@@ -52,8 +58,12 @@ export const countMoneyBotActionCreator = (): BotAction => prepareBotAction(
                                     }));
                                     throw new Error('Can not find supported currency!');
                                 }
-                                return Math.trunc(netAmount * supportedCurrency.currencyToUsd * 100) / 100;
+                                // convert netAmount to payout currency amount
+                                return Math.trunc(netAmount * supportedCurrency.currencyToPayoutCurrency * 100) / 100;
                             }).reduce((payoutAmount, someCurrencyPayout) => payoutAmount + someCurrencyPayout, 0);
+                        /**
+                         * Construct message from payout amount.
+                         */
                         let message;
                         const items = `(${member.obtainedItems.join(', ')})`;
                         if (payoutAmount > 0) {

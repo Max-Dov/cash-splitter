@@ -16,7 +16,7 @@ export interface JsonStorage {
      */
     supportedCurrencies: {
         currencyName: string; // e.g. "$", "руб"
-        currencyToUsd: number; // how much 1 unit of currency costs in dollar.
+        currencyToPayoutCurrency: number; // how much 1 unit of currency costs in payout currency.
     }[];
     /**
      * Default currency name if member does not specify currency.
