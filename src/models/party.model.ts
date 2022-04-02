@@ -1,4 +1,5 @@
 import {PartyMember} from './party-member.model';
+import {Chat, Message} from '@grammyjs/types';
 
 /**
  * Party info.
@@ -10,4 +11,16 @@ export interface Party {
     partyMembers: {
         [key in PartyMember['username']]: PartyMember
     };
+    /**
+     * Messages that were heard and processed by bot.
+     */
+    processedMessagesIds: Message['message_id'][];
+    /**
+     * Messages that were sent by bot.
+     */
+    botMessageIds: Message['message_id'][];
+    /**
+     * Chat ID associated with party.
+     */
+    chatId: Chat['id'];
 }

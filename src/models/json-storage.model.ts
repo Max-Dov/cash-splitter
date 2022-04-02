@@ -6,7 +6,7 @@ import {Party} from './party.model';
  */
 export interface JsonStorage {
     /**
-     * Set of <chatId, Party> pairs.
+     * Set of (chatId, Party) pairs.
      */
     chats: {
        [chatId in string]?: Party

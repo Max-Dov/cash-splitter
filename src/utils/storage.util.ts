@@ -2,6 +2,7 @@ import {pathExists, readJson, writeJson} from 'fs-extra';
 
 import {JsonStorage} from '../models/json-storage.model';
 import {JSON_STORAGE_INIT} from '../constants/json-storage-init.const';
+import {Logger} from './logger.util';
 
 /**
  * Provides static methods to access JSON storage.
@@ -27,6 +28,8 @@ export class Storage {
 
     static saveStorage = (): Promise<void> => {
         const filePath = process.env.STORAGE_DIR || './build/storage.json';
-        return writeJson(filePath, Storage.storage, {spaces: 2});
+        const promise = writeJson(filePath, Storage.storage, {spaces: 2});
+        promise.then(() => Logger.info('Storage saved'));
+        return promise;
     };
 }

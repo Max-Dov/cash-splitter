@@ -6,6 +6,7 @@ import {Logger} from '../utils/logger.util';
 import {prepareBotAction} from '../utils/prepare-bot-action.util';
 import {verifyCtxFields} from '../utils/verify-ctx-fields.util';
 import {bgYellow} from 'chalk';
+import {saveMessageAsProcessed} from '../utils/save-message-as-processed.util';
 
 export const readMoneySpentBotActionCreator = (): BotAction | never => {
     /**
@@ -47,7 +48,12 @@ export const readMoneySpentBotActionCreator = (): BotAction | never => {
             const chats = storage.chats;
             let chat = chats[String(chatId)];
             if (!chat) {
-                chat = {partyMembers: {}};
+                chat = {
+                    partyMembers: {},
+                    processedMessagesIds: [],
+                    botMessageIds: [],
+                    chatId: chatId as number
+                };
                 chats[String(chatId)] = chat;
             }
             const partyMembers = chat.partyMembers;
@@ -119,14 +125,11 @@ export const readMoneySpentBotActionCreator = (): BotAction | never => {
             }
             for (const [, member] of oweMembersMap) {
                 const owedAmount = Math.trunc(Number(amountSpent) / oweMembersShareSum * member.shares * 100) / 100;
-                member.obtainedItems.push(`${owedAmount}${currency} ${note || 'something mysterious with no name'}`);
+                member.obtainedItems.push(`${owedAmount} ${currency} ${note || 'something mysterious with no name'}`);
                 member.totalOwed[currency] = (member.totalOwed[currency] || 0) + owedAmount;
             }
-            Storage.saveStorage()
-                .then(() => {
-                    Logger.info('Successfully saved money spent info!');
-                })
-                .catch(error => Logger.error('Could not write to storage file.', {error}));
+            saveMessageAsProcessed(messageId as number, chatId as number);
+            Storage.saveStorage().catch(error => Logger.error('Could not write to storage file.', {error: error.message}));
         },
         regexpCommand
     );

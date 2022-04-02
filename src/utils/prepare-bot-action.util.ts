@@ -24,7 +24,7 @@ export const prepareBotAction = (
             try {
                 commandHandler(ctx);
             } catch (error) {
-                Logger.error(`Something went wrong while processing ${chalk.bgRed(command)} command!`, error);
+                Logger.error(`Something went wrong while processing ${chalk.bgRed(command)} command!`, {error: (error as Error).message});
             }
         },
     ];
