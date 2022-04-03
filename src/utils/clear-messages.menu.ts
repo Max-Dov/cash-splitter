@@ -14,16 +14,16 @@ const deleteAllMessages = (ctx: Context): Promise<void> =>
         closeMenu(ctx);
     }).catch(error => {
         Logger.error('Something went wrong when trying to delete all messages from chat!', bgRed(error.message));
-        throw new Error('Could not delete all messages from chat!')
+        throw new Error('Could not delete all messages from chat!');
     });
 
 const deleteChatMembersMessages = (ctx: Context): Promise<void> =>
     deleteMessagesFromChat(ctx, false)
-        .then(() => closeMenu(ctx))
+        .then(() => closeMenu(ctx));
 
 const deleteBotMessages = (ctx: Context): Promise<void> =>
     deleteMessagesFromChat(ctx, true)
-        .then(() => closeMenu(ctx))
+        .then(() => closeMenu(ctx));
 
 const deleteMessagesFromChat = (ctx: Context, areBotMessagesToRemove: boolean): Promise<void> => {
     const chatId = ctx.update.callback_query?.message?.chat.id;
@@ -41,10 +41,18 @@ const deleteMessagesFromChat = (ctx: Context, areBotMessagesToRemove: boolean): 
     return Promise.all(messagesDeletionPromises).then(() => {
         chat[areBotMessagesToRemove ? 'botMessageIds' : 'processedMessagesIds'] = [];
         Logger.info('Successfully deleted messages from chat', bgGreen(chatId));
+        if (!areBotMessagesToRemove) { // then should clear obtained items as well
+            Object.values(chat.partyMembers)
+                .forEach(member => {
+                    member.obtainedItems = [];
+                    member.totalOwed = {};
+                    member.totalSpent = {};
+                });
+        }
     }).catch(error => {
         Logger.error('Something went wrong when attempting to delete messages.', bgRed(error.message));
         throw new Error('Could not delete messages!');
-    });
+    }).finally(Storage.saveStorage);
 };
 
 const forgetMessages = (ctx: Context): void => {
@@ -57,16 +65,23 @@ const forgetMessages = (ctx: Context): void => {
     }
     chat.processedMessagesIds = [];
     chat.botMessageIds = [];
+    Object.values(chat.partyMembers)
+        .forEach(member => {
+            member.obtainedItems = [];
+            member.totalOwed = {};
+            member.totalSpent = {};
+        });
     Logger.info('Successfully forgot messages from chat', bgGreen(chatId));
-    closeMenu(ctx);
-}
+    Storage.saveStorage()
+        .then(() => closeMenu(ctx));
+};
 
 const closeMenu = (ctx: Context): void => {
     const message = ctx.update.callback_query?.message;
     const messageId = message?.message_id;
     const chatId = message?.chat.id;
     verifyCtxFields({messageId, chatId}, ctx);
-    deleteMessage(messageId as number, chatId as number, ctx)
+    deleteMessage(messageId as number, chatId as number, ctx, 'clear-messages-menu')
         .catch(error => {
             Logger.error('Could not close', bgRed('clear-messages-menu'), 'menu.', bgRed(error.message));
             throw new Error('Could not close menu!');

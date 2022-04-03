@@ -1,7 +1,7 @@
 import {CommandHandler} from '../models/command-handler.model';
 import {BotAction} from '../models/bot-action.model';
 import {Logger} from './logger.util';
-import chalk from 'chalk';
+import chalk, {bgRed} from 'chalk';
 import {BotCommandsKeys} from '../constants/bot-commands-keys.enum';
 import {Localizer} from './localizer.util';
 
@@ -24,7 +24,7 @@ export const prepareBotAction = (
             try {
                 commandHandler(ctx);
             } catch (error) {
-                Logger.error(`Something went wrong while processing ${chalk.bgRed(command)} command!`, {error: (error as Error).message});
+                Logger.error(`Something went wrong while processing ${chalk.bgRed(command)} command!`, bgRed((error as Error).message));
             }
         },
     ];

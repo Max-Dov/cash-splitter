@@ -13,22 +13,21 @@ import {saveBotMessage} from '../utils/save-bot-message.util';
 
 /**
  * Figure out cashback and cashin for everyone and send that in chat.
- * TODO add ability to remove old messages by button
  */
 export const countMoneyBotActionCreator = (): BotAction => prepareBotAction(
     BotCommandsKeys.COUNT_MONEY,
     ctx => {
-        const prependMessagePromise = ctx.reply(Localizer.message(BotMessagesKeys.COUNT_MONEY_RESPONSE))
+        const prependMessagePromise = ctx.reply(Localizer.message(BotMessagesKeys.COUNT_MONEY_RESPONSE));
         prependMessagePromise
             .then((ctx) => {
                 const chatId = ctx?.chat.id;
                 const messageId = ctx?.message_id;
                 verifyCtxFields({chatId, messageId}, ctx);
-                saveBotMessage(messageId as number, chatId as number)
+                saveBotMessage(messageId as number, chatId as number);
             })
             .catch((error) => {
-            throw Error(error);
-        })
+                throw Error(error);
+            });
         const chatId = ctx?.message?.chat.id;
         const messageId = ctx?.message?.message_id;
         verifyCtxFields({chatId, messageId}, ctx);
@@ -107,7 +106,11 @@ export const countMoneyBotActionCreator = (): BotAction => prepareBotAction(
             .catch((error) => {
                 throw Error(error);
             })
-            .then(() => {
+            .then((botMessageCtx) => {
+                const chatId = botMessageCtx?.chat.id;
+                const messageId = botMessageCtx?.message_id;
+                verifyCtxFields({chatId, messageId}, botMessageCtx);
+                saveBotMessage(messageId as number, chatId as number);
                 openClearMessagesMenu(ctx);
             });
     },

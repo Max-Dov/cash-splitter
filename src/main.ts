@@ -5,7 +5,8 @@ import {Localizer} from './utils/localizer.util';
 import {Storage} from './utils/storage.util';
 import {countMoneyBotActionCreator, setShareBotActionCreator} from './bot-actions';
 import {readMoneySpentBotActionCreator} from './bot-actions/read-money-spent.bot-action';
-import {clearMessagesMenu} from './utils/clear-messages.menu';
+import {clearMessagesMenu, openClearMessagesMenu} from './utils/clear-messages.menu';
+import {ChatCommands} from './constants/chat-commands.enum';
 
 // TODO add feature to expand currencies via commands
 // TODO add feature to reset chat info
@@ -67,8 +68,15 @@ Promise.all([localizerInitPromise, storageInitPromise])
         try {
             if (isStartupSuccessful) {
                 bot = new Bot(process.env.HTTP_API_TOKEN || '');
+                bot.api.setMyCommands([
+                    {command: ChatCommands.COUNT_MONEY, description: 'Count cashback and cashin for everyone in chat.'},
+                    {command: ChatCommands.CLEAN_MESSAGES, description: 'Bring up the menu to remove old messages.'},
+                ]);
                 bot.use(clearMessagesMenu);
-                bot.hears(...countMoneyBotActionCreator());
+                const countMoneyBotAction = countMoneyBotActionCreator();
+                bot.hears(...countMoneyBotAction);
+                bot.command(ChatCommands.COUNT_MONEY, countMoneyBotAction[1]);
+                bot.command(ChatCommands.CLEAN_MESSAGES, openClearMessagesMenu);
                 bot.hears(...setShareBotActionCreator());
                 bot.hears(...readMoneySpentBotActionCreator());
                 bot.on('message', () => {
@@ -76,7 +84,7 @@ Promise.all([localizerInitPromise, storageInitPromise])
                 });
                 bot.catch((ctx) => {
                     Logger.error('Bot unexpected error!', ctx.message);
-                })
+                });
                 Logger.goodInfo('Bot protocols: declared!');
             }
         } catch (error) {
@@ -89,7 +97,7 @@ Promise.all([localizerInitPromise, storageInitPromise])
             if (isStartupSuccessful) {
                 bot!.start().catch((ctx) => {
                     Logger.error('Bot unexpected error!', ctx.message);
-                })
+                });
                 Logger.goodInfo('Bot status: ready and working!');
                 Logger.info('Bot started in', new Date().getTime() - startTime, 'ms');
             } else {
