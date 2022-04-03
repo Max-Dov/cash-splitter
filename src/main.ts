@@ -8,17 +8,6 @@ import {readMoneySpentBotActionCreator} from './bot-actions/read-money-spent.bot
 import {clearMessagesMenu, openClearMessagesMenu} from './utils/clear-messages.menu';
 import {ChatCommands} from './constants/chat-commands.enum';
 
-// TODO add feature to expand currencies via commands
-// TODO add feature to reset chat info
-// TODO add command for clearMessagesMenu
-// TODO add command for counting money
-// TODO add feature to display owedItems via bot.
-// TODO add a way to customize "money spent" message via strings templating
-// TODO add feature of debug mode when bot will send error messages to chat or bot owner once having error
-// TODO add feature to support message editing
-
-// TODO bug - if message is forwarded from user who hides their link, then it won't pick that user up.
-// TODO fix to above: send message when following happens and don't process message
 const startTime = new Date().getTime();
 let isStartupSuccessful = true;
 
