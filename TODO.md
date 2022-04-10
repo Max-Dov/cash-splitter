@@ -3,13 +3,14 @@ Wrap following functionality in feature flags:
 * Clearing messages via "Clear messages" menu.
 * Owed items display.
 
+### Create message that will display money split and update on new message
 ### Expand currencies via command
 ### Customize "money spent" message via strings templating
 ### Support message editing
 
 # Code
 ### Errors
-Improve errors placing within code so they would be more meaningful and appropriate.
+Improve errors placing within code, so they would be more meaningful and appropriate.
 Add feature of debug mode when bot will send error messages to chat or bot owner once having error.
 
 # Bugs

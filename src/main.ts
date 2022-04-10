@@ -5,8 +5,10 @@ import {Localizer} from './utils/localizer.util';
 import {Storage} from './utils/storage.util';
 import {countMoneyBotActionCreator, setShareBotActionCreator} from './bot-actions';
 import {readMoneySpentBotActionCreator} from './bot-actions/read-money-spent.bot-action';
-import {clearMessagesMenu, openClearMessagesMenu} from './utils/clear-messages.menu';
+import {clearMessagesMenu} from './utils/clear-messages.menu';
 import {ChatCommands} from './constants/chat-commands.enum';
+import {countMoneyBotCommandActionCreator} from './bot-actions/count-money.bot-action';
+import {openClearMessagesMenuBotActionCreator} from './bot-actions/open-clear-messages-menu.bot-action';
 
 const startTime = new Date().getTime();
 let isStartupSuccessful = true;
@@ -59,13 +61,12 @@ Promise.all([localizerInitPromise, storageInitPromise])
                 bot = new Bot(process.env.HTTP_API_TOKEN || '');
                 bot.api.setMyCommands([
                     {command: ChatCommands.COUNT_MONEY, description: 'Count cashback and cashin for everyone in chat.'},
-                    {command: ChatCommands.CLEAN_MESSAGES, description: 'Bring up the menu to remove old messages.'},
+                    {command: ChatCommands.CLEAN_MESSAGES, description: 'Bring up menu to remove old messages.'},
                 ]);
                 bot.use(clearMessagesMenu);
-                const countMoneyBotAction = countMoneyBotActionCreator();
-                bot.hears(...countMoneyBotAction);
-                bot.command(ChatCommands.COUNT_MONEY, countMoneyBotAction[1]);
-                bot.command(ChatCommands.CLEAN_MESSAGES, openClearMessagesMenu);
+                bot.hears(...countMoneyBotActionCreator());
+                bot.command(...countMoneyBotCommandActionCreator());
+                bot.command(...openClearMessagesMenuBotActionCreator());
                 bot.hears(...setShareBotActionCreator());
                 bot.hears(...readMoneySpentBotActionCreator());
                 bot.on('message', () => {
