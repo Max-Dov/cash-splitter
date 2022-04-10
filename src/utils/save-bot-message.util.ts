@@ -1,6 +1,5 @@
-import {Storage} from './storage.util';
-import {Logger} from './logger.util';
 import {bgGreen} from 'chalk';
+import {Storage, Logger} from '@utils';
 
 export const saveBotMessage = (messageId: number, chatId: number): void => {
     const chat = Storage.storage.chats[chatId];

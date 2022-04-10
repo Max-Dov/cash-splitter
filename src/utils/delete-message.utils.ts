@@ -1,6 +1,6 @@
 import {Context} from 'grammy';
-import {Logger} from './logger.util';
 import {bgGray, bgRed} from 'chalk';
+import {Logger} from '@utils';
 
 export const deleteMessage = (messageId: number, chatId: number, ctx: Context, note: string = ''): Promise<true> => {
     const promise = ctx.api.deleteMessage(chatId as number, messageId as number);

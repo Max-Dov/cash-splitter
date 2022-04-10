@@ -1,8 +1,7 @@
-import {CommandHandler} from '../models/command-handler.model';
-import {Logger} from './logger.util';
 import chalk, {bgRed} from 'chalk';
-import {ChatCommands} from '../constants/chat-commands.enum';
-import {BotCommandAction} from '../models/bot-command-action.model';
+import {Logger} from '@utils';
+import {ChatCommands} from '@constants';
+import {BotCommandAction, CommandHandler} from '@models';
 
 /**
  * Wraps bot command and command handler into Bo Command Action. Logs command name.

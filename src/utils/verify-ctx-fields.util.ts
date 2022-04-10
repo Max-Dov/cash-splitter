@@ -1,6 +1,6 @@
 import {Context} from 'grammy';
-import {Logger} from './logger.util';
 import {Message} from '@grammyjs/types';
+import {Logger} from '@utils';
 
 /**
  * Verifies that object consisting of fields from ctx (action handler context) contains no undefined fields;

@@ -1,10 +1,7 @@
 import {Menu} from '@grammyjs/menu';
 import {Context} from 'grammy';
-import {Logger} from './logger.util';
-import {verifyCtxFields} from './verify-ctx-fields.util';
 import {bgGreen, bgRed} from 'chalk';
-import {deleteMessage, deleteMessages} from './delete-message.utils';
-import {Storage} from './storage.util';
+import {deleteMessage, deleteMessages, Logger, Storage, verifyCtxFields} from '@utils';
 
 const deleteAllMessages = (ctx: Context): Promise<void> =>
     Promise.all([

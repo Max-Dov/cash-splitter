@@ -1,8 +1,8 @@
 import {pathExists, readJson, writeJson} from 'fs-extra';
 
-import {JsonStorage} from '../models/json-storage.model';
-import {JSON_STORAGE_INIT} from '../constants/json-storage-init.const';
-import {Logger} from './logger.util';
+import {JsonStorage} from '@models';
+import {JSON_STORAGE_INIT} from '@constants';
+import {Logger} from '@utils';
 
 /**
  * Provides static methods to access JSON storage.

@@ -1,5 +1,5 @@
-import {CommandHandler} from './command-handler.model';
-import {ChatCommands} from '../constants/chat-commands.enum';
+import {CommandHandler} from '@models';
+import {ChatCommands} from '@constants';
 
 /**
  * <Command, CommandHandler> pair wrapped in tuple. Expected to be passed as arguments to Bot.command.

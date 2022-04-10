@@ -1,14 +1,14 @@
 import dotenv from 'dotenv';
 import {Bot} from 'grammy';
-import {Logger} from './utils/logger.util';
-import {Localizer} from './utils/localizer.util';
-import {Storage} from './utils/storage.util';
-import {countMoneyBotActionCreator, setShareBotActionCreator} from './bot-actions';
-import {readMoneySpentBotActionCreator} from './bot-actions/read-money-spent.bot-action';
-import {clearMessagesMenu} from './utils/clear-messages.menu';
-import {ChatCommands} from './constants/chat-commands.enum';
-import {countMoneyBotCommandActionCreator} from './bot-actions/count-money.bot-action';
-import {openClearMessagesMenuBotActionCreator} from './bot-actions/open-clear-messages-menu.bot-action';
+import {
+    countMoneyBotActionCreator,
+    setShareBotActionCreator,
+    readMoneySpentBotActionCreator,
+    countMoneyBotCommandActionCreator,
+    openClearMessagesMenuBotActionCreator,
+} from '@bot-actions';
+import {clearMessagesMenu, Localizer, Logger, Storage} from '@utils';
+import {ChatCommands} from '@constants';
 
 const startTime = new Date().getTime();
 let isStartupSuccessful = true;

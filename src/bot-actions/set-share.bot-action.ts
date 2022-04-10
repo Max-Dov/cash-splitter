@@ -1,17 +1,13 @@
-import {BotCommandsKeys} from '../constants/bot-commands-keys.enum';
-import {Logger} from '../utils/logger.util';
-import {Storage} from '../utils/storage.util';
-import {writeJson} from 'fs-extra';
-import {RegExps} from '../constants/regexps.enum';
-import {prepareBotAction} from '../utils/prepare-bot-action.util';
-import {BotAction} from '../models/bot-action.model';
+import {BotAction} from '@models';
+import {BotCommandsKeys} from '@constants';
+import {prepareBotAction} from '@utils';
 
 /**
  * Set member share to requested value.
  */
 export const setShareBotActionCreator = (): BotAction => prepareBotAction(
     BotCommandsKeys.SET_SHARE,
-    ctx => {
+    () => {
     //     const message = ctx.message;
     //     if (!message) {
     //         Logger.error('Could not figure out message from context.', {ctx});

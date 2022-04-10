@@ -1,4 +1,4 @@
-import {PartyMember} from './party-member.model';
+import {PartyMember} from '@models';
 import {Chat, Message} from '@grammyjs/types';
 
 /**

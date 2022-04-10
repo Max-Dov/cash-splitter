@@ -8,11 +8,17 @@
     "allowSyntheticDefaultImports": true,
     "outDir": "build",
     "sourceMap": true,
+    "paths": {
+      "@bot-actions": ["./src/bot-actions/"],
+      "@constants": ["./src/constants/"],
+      "@models": ["./src/models/"],
+      "@utils": ["./src/utils/"],
+    }
   },
   "include": [
     "src"
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
 }

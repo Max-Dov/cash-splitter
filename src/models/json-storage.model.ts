@@ -1,4 +1,4 @@
-import {Party} from './party.model';
+import {Party} from '@models';
 
 /**
  * Storage structure.

@@ -1,4 +1,4 @@
-import {JsonStorage} from './json-storage.model';
+import {JsonStorage} from '@models';
 
 /**
  * Single person who spent some money and has some share in party.

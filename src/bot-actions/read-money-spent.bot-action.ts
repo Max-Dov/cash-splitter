@@ -1,12 +1,7 @@
-import {BotAction} from '../models/bot-action.model';
-import {Localizer} from '../utils/localizer.util';
-import {BotCommandsKeys} from '../constants/bot-commands-keys.enum';
-import {Storage} from '../utils/storage.util';
-import {Logger} from '../utils/logger.util';
-import {prepareBotAction} from '../utils/prepare-bot-action.util';
-import {verifyCtxFields} from '../utils/verify-ctx-fields.util';
 import {bgYellow} from 'chalk';
-import {saveMessageAsProcessed} from '../utils/save-message-as-processed.util';
+import {BotAction} from '@models';
+import {Localizer, Logger, prepareBotAction, saveMessageAsProcessed, Storage, verifyCtxFields} from '@utils';
+import {BotCommandsKeys} from '@constants';
 
 export const readMoneySpentBotActionCreator = (): BotAction | never => {
     /**

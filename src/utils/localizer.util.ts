@@ -1,8 +1,7 @@
 import {pathExists, readJson} from 'fs-extra';
-import {Logger} from './logger.util';
 import chalk from 'chalk';
-import {BotMessagesKeys} from '../constants/bot-messages-keys.enum';
-import {BotCommandsKeys} from '../constants/bot-commands-keys.enum';
+import {Logger} from '@utils';
+import {BotMessagesKeys, BotCommandsKeys} from '@constants';
 
 /**
  * Provides static methods to utilize localisation strings.

@@ -1,19 +1,17 @@
-import {Storage} from '../utils/storage.util';
-import {Localizer} from '../utils/localizer.util';
-import {BotMessagesKeys} from '../constants/bot-messages-keys.enum';
-import {BotCommandsKeys} from '../constants/bot-commands-keys.enum';
-import {prepareBotAction} from '../utils/prepare-bot-action.util';
-import {BotAction} from '../models/bot-action.model';
-import {verifyCtxFields} from '../utils/verify-ctx-fields.util';
-import {Logger} from '../utils/logger.util';
 import {bgRed} from 'chalk';
-import {openClearMessagesMenu} from '../utils/clear-messages.menu';
-import {saveMessageAsProcessed} from '../utils/save-message-as-processed.util';
-import {saveBotMessage} from '../utils/save-bot-message.util';
-import {CommandHandler} from '../models/command-handler.model';
-import {ChatCommands} from '../constants/chat-commands.enum';
-import {prepareBotCommandAction} from '../utils/prepare-bot-command-action.util';
-import {BotCommandAction} from '../models/bot-command-action.model';
+import {
+    Localizer,
+    Logger,
+    Storage,
+    prepareBotCommandAction,
+    saveBotMessage,
+    verifyCtxFields,
+    saveMessageAsProcessed,
+    prepareBotAction,
+    openClearMessagesMenu
+} from '@utils';
+import {BotAction, BotCommandAction, CommandHandler} from '@models';
+import {BotCommandsKeys, BotMessagesKeys, ChatCommands} from '@constants';
 
 /**
  * Figure out cashback and cashin for everyone and send that in chat.

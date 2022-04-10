@@ -5,7 +5,13 @@ module.exports = {
     target: 'node',
     entry: './src/main.ts',
     resolve: {
-        extensions: ['.ts', '.js']
+        extensions: ['.ts', '.js'],
+        alias: {
+            '@bot-actions': path.resolve(__dirname, 'src', 'bot-actions'),
+            '@constants': path.resolve(__dirname, 'src', 'constants'),
+            '@models': path.resolve(__dirname, 'src', 'models'),
+            '@utils': path.resolve(__dirname, 'src', 'utils'),
+        }
     },
     devtool: 'inline-source-map',
     module: {

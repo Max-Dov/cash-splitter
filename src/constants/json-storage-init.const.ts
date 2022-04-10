@@ -1,4 +1,4 @@
-import {JsonStorage} from '../models/json-storage.model';
+import {JsonStorage} from '@models';
 
 /**
  * App JSON storage initialization value.
