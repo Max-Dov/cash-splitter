@@ -1,6 +1,9 @@
 import {bgGreen} from 'chalk';
 import {Storage, Logger} from '@utils';
 
+/**
+ * Save bot message for later removal.
+ */
 export const saveBotMessage = (messageId: number, chatId: number): void => {
     const chat = Storage.storage.chats[chatId];
     if (!chat) {

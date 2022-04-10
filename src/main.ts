@@ -5,7 +5,7 @@ import {
     setShareBotActionCreator,
     readMoneySpentBotActionCreator,
     countMoneyBotCommandActionCreator,
-    openClearMessagesMenuBotActionCreator,
+    openClearMessagesMenuBotActionCreator, sendSummaryMessageBotActionCreator,
 } from '@bot-actions';
 import {clearMessagesMenu, getRedErrorMessage, Localizer, Logger, Storage} from '@utils';
 import {ChatCommands} from '@constants';
@@ -61,12 +61,14 @@ Promise.all([localizerInitPromise, storageInitPromise])
                 bot = new Bot(process.env.HTTP_API_TOKEN || '');
                 bot.api.setMyCommands([
                     {command: ChatCommands.COUNT_MONEY, description: 'Count cashback and cashin for everyone in chat.'},
+                    {command: ChatCommands.SEND_SUMMARY_MESSAGE, description: 'Send summary message with updates on every message.'},
                     {command: ChatCommands.CLEAN_MESSAGES, description: 'Bring up menu to remove old messages.'},
                 ]);
                 bot.use(clearMessagesMenu);
                 bot.hears(...countMoneyBotActionCreator());
                 bot.command(...countMoneyBotCommandActionCreator());
                 bot.command(...openClearMessagesMenuBotActionCreator());
+                bot.command(...sendSummaryMessageBotActionCreator());
                 bot.hears(...setShareBotActionCreator());
                 bot.hears(...readMoneySpentBotActionCreator());
                 bot.on('message', () => {

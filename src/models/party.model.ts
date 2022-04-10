@@ -23,4 +23,8 @@ export interface Party {
      * Chat ID associated with party.
      */
     chatId: Chat['id'];
+    /**
+     * Summary message from bot with live updates to it.
+     */
+    summaryMessageId?: Message['message_id'];
 }

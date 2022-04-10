@@ -8,7 +8,7 @@ import {
     verifyCtxFields,
     saveMessageAsProcessed,
     prepareBotAction,
-    openClearMessagesMenu
+    openClearMessagesMenu, getOrCreateParty
 } from '@utils';
 import {BotAction, BotCommandAction, CommandHandler} from '@models';
 import {BotCommandsKeys, BotMessagesKeys, ChatCommands} from '@constants';
@@ -31,8 +31,8 @@ const commandHandler: CommandHandler = (ctx) => {
     const chatId = ctx?.message?.chat.id;
     const messageId = ctx?.message?.message_id;
     verifyCtxFields({chatId, messageId}, ctx);
-    const chat = Storage.storage.chats[String(chatId)];
-    if (!chat) {
+    const chat = getOrCreateParty(chatId as number)
+    if (Object.keys(chat.partyMembers).length === 0) {
         ctx.api.sendMessage(chatId as number, Localizer.message(BotMessagesKeys.NOTHING_POSTED_IN_CHAT_YET))
             .catch((error) => {
                 throw Error(error);
@@ -99,7 +99,7 @@ const commandHandler: CommandHandler = (ctx) => {
             return message;
         });
     const payoutMessage = Localizer.message(BotMessagesKeys.COUNT_MONEY_RESULTS, {
-        partyCashback: payoutStrings.join('\n\n')
+        partyCashback: payoutStrings.join('\n')
     });
     saveMessageAsProcessed(messageId as number, chatId as number);
     ctx.api.sendMessage(chatId as number, payoutMessage)

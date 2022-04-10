@@ -9,7 +9,7 @@ export interface JsonStorage {
      * Set of (chatId, Party) pairs.
      */
     chats: {
-       [chatId in string]?: Party
+       [chatId in number]?: Party
     }
     /**
      * List of supported currencies. Can be anything members are calling their money.

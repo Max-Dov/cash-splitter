@@ -1,6 +1,9 @@
 import {bgGreen} from 'chalk';
 import {Storage, Logger} from '@utils';
 
+/**
+ * Save user message as successfully processed by bot.
+ */
 export const saveMessageAsProcessed = (messageId: number, chatId: number): void | never => {
     const chat = Storage.storage.chats[chatId];
     if (!chat) {

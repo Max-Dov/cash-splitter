@@ -1,7 +1,15 @@
 import {Menu} from '@grammyjs/menu';
 import {Context} from 'grammy';
 import {bgGreen, bgRed} from 'chalk';
-import {deleteMessage, deleteMessages, getRedErrorMessage, Logger, Storage, verifyCtxFields} from '@utils';
+import {
+    deleteMessage,
+    deleteMessages,
+    getOrCreateParty,
+    getRedErrorMessage,
+    Logger,
+    Storage,
+    verifyCtxFields
+} from '@utils';
 
 const deleteAllMessages = (ctx: Context): Promise<void> =>
     Promise.all([
@@ -25,11 +33,7 @@ const deleteBotMessages = (ctx: Context): Promise<void> =>
 const deleteMessagesFromChat = (ctx: Context, areBotMessagesToRemove: boolean): Promise<void> => {
     const chatId = ctx.update.callback_query?.message?.chat.id;
     verifyCtxFields({chatId}, ctx);
-    const chat = Storage.storage.chats[String(chatId)];
-    if (!chat) {
-        Logger.error('Could not delete messages due to chat', bgRed(chatId), 'missing!');
-        throw Error('Could not find chat by chatId!');
-    }
+    const chat = getOrCreateParty(chatId as number);
     const messagesDeletionPromises = deleteMessages(
         chat[areBotMessagesToRemove ? 'botMessageIds' : 'processedMessagesIds'],
         chatId as number,
@@ -55,11 +59,7 @@ const deleteMessagesFromChat = (ctx: Context, areBotMessagesToRemove: boolean): 
 const forgetMessages = (ctx: Context): void => {
     const chatId = ctx.update.callback_query?.message?.chat.id;
     verifyCtxFields({chatId}, ctx);
-    const chat = Storage.storage.chats[String(chatId)];
-    if (!chat) {
-        Logger.error('Could not forget bot messages due to chat', bgRed(chatId), 'missing!');
-        throw Error('Could not find chat by chatId!');
-    }
+    const chat = getOrCreateParty(chatId as number);
     chat.processedMessagesIds = [];
     chat.botMessageIds = [];
     Object.values(chat.partyMembers)

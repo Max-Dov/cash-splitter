@@ -2,3 +2,4 @@ export {countMoneyBotActionCreator, countMoneyBotCommandActionCreator} from './c
 export {setShareBotActionCreator} from './set-share.bot-action'
 export {readMoneySpentBotActionCreator} from './read-money-spent.bot-action'
 export {openClearMessagesMenuBotActionCreator} from './open-clear-messages-menu.bot-action'
+export {sendSummaryMessageBotActionCreator} from './send-summary-message.bot-action'

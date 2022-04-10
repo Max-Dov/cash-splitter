@@ -1,6 +1,14 @@
 import {bgYellow} from 'chalk';
 import {BotAction} from '@models';
-import {Localizer, Logger, prepareBotAction, saveMessageAsProcessed, Storage, verifyCtxFields} from '@utils';
+import {
+    getOrCreateParty, getRedErrorMessage,
+    Localizer,
+    Logger,
+    prepareBotAction,
+    saveMessageAsProcessed,
+    Storage,
+    verifyCtxFields
+} from '@utils';
 import {BotCommandsKeys} from '@constants';
 
 export const readMoneySpentBotActionCreator = (): BotAction | never => {
@@ -39,19 +47,8 @@ export const readMoneySpentBotActionCreator = (): BotAction | never => {
             const senderUsername = message?.forward_from?.username || message?.from?.username;
             verifyCtxFields({chatId, senderUsername, messageId}, ctx);
 
-            // extract chat
-            const chats = storage.chats;
-            let chat = chats[String(chatId)];
-            if (!chat) {
-                chat = {
-                    partyMembers: {},
-                    processedMessagesIds: [],
-                    botMessageIds: [],
-                    chatId: chatId as number
-                };
-                chats[String(chatId)] = chat;
-            }
-            const partyMembers = chat.partyMembers;
+            // extract party members
+            const partyMembers = getOrCreateParty(chatId as number).partyMembers;
 
             // extract spender
             // TODO trim "via regexp"; fix regexp groups to not include space
@@ -124,7 +121,7 @@ export const readMoneySpentBotActionCreator = (): BotAction | never => {
                 member.totalOwed[currency] = (member.totalOwed[currency] || 0) + owedAmount;
             }
             saveMessageAsProcessed(messageId as number, chatId as number);
-            Storage.saveStorage().catch(error => Logger.error('Could not write to storage file.', {error: error.message}));
+            Storage.saveStorage().catch(error => Logger.error('Could not write to storage file.', getRedErrorMessage(error)));
         },
         regexpCommand
     );
