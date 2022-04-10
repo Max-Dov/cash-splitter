@@ -8,3 +8,4 @@ export {saveBotMessage} from './save-bot-message.util';
 export {saveMessageAsProcessed} from './save-message-as-processed.util';
 export {Storage} from './storage.util';
 export {verifyCtxFields} from './verify-ctx-fields.util';
+export {getRedErrorMessage} from './get-error-message.util';

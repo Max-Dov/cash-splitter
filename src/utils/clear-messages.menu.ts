@@ -1,7 +1,7 @@
 import {Menu} from '@grammyjs/menu';
 import {Context} from 'grammy';
 import {bgGreen, bgRed} from 'chalk';
-import {deleteMessage, deleteMessages, Logger, Storage, verifyCtxFields} from '@utils';
+import {deleteMessage, deleteMessages, getRedErrorMessage, Logger, Storage, verifyCtxFields} from '@utils';
 
 const deleteAllMessages = (ctx: Context): Promise<void> =>
     Promise.all([
@@ -10,7 +10,7 @@ const deleteAllMessages = (ctx: Context): Promise<void> =>
     ]).then(() => {
         closeMenu(ctx);
     }).catch(error => {
-        Logger.error('Something went wrong when trying to delete all messages from chat!', bgRed(error.message));
+        Logger.error('Something went wrong when trying to delete all messages from chat!', getRedErrorMessage(error));
         throw new Error('Could not delete all messages from chat!');
     });
 
@@ -47,7 +47,7 @@ const deleteMessagesFromChat = (ctx: Context, areBotMessagesToRemove: boolean): 
                 });
         }
     }).catch(error => {
-        Logger.error('Something went wrong when attempting to delete messages.', bgRed(error.message));
+        Logger.error('Something went wrong when attempting to delete messages.', getRedErrorMessage(error));
         throw new Error('Could not delete messages!');
     }).finally(Storage.saveStorage);
 };
@@ -80,7 +80,7 @@ const closeMenu = (ctx: Context): void => {
     verifyCtxFields({messageId, chatId}, ctx);
     deleteMessage(messageId as number, chatId as number, ctx, 'clear-messages-menu')
         .catch(error => {
-            Logger.error('Could not close', bgRed('clear-messages-menu'), 'menu.', bgRed(error.message));
+            Logger.error('Could not close', bgRed('clear-messages-menu'), 'menu.', getRedErrorMessage(error));
             throw new Error('Could not close menu!');
         });
 };
@@ -98,5 +98,5 @@ export const clearMessagesMenu = new Menu('clear-messages-menu')
 
 export const openClearMessagesMenu = (ctx: Context): void => {
     ctx.reply('I can delete older messages from above:', {reply_markup: clearMessagesMenu})
-        .catch((error) => Logger.error('Something went wrong with', bgRed('clear-messages-menu'), 'menu.', bgRed(error.message)));
+        .catch((error) => Logger.error('Something went wrong with', bgRed('clear-messages-menu'), 'menu.', getRedErrorMessage(error)));
 };

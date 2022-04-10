@@ -1,6 +1,6 @@
-import chalk, {bgRed} from 'chalk';
+import chalk from 'chalk';
 import {CommandHandler, BotAction} from '@models';
-import {Logger, Localizer} from '@utils';
+import {Logger, Localizer, getRedErrorMessage} from '@utils';
 import {BotCommandsKeys} from '@constants';
 
 /**
@@ -22,7 +22,7 @@ export const prepareBotAction = (
             try {
                 commandHandler(ctx);
             } catch (error) {
-                Logger.error(`Something went wrong while processing ${chalk.bgRed(command)} command!`, bgRed((error as Error).message));
+                Logger.error(`Something went wrong while processing ${chalk.bgRed(command)} command!`, getRedErrorMessage(error));
             }
         },
     ];

@@ -7,7 +7,7 @@ import {
     countMoneyBotCommandActionCreator,
     openClearMessagesMenuBotActionCreator,
 } from '@bot-actions';
-import {clearMessagesMenu, Localizer, Logger, Storage} from '@utils';
+import {clearMessagesMenu, getRedErrorMessage, Localizer, Logger, Storage} from '@utils';
 import {ChatCommands} from '@constants';
 
 const startTime = new Date().getTime();
@@ -72,8 +72,8 @@ Promise.all([localizerInitPromise, storageInitPromise])
                 bot.on('message', () => {
                     Logger.info('Some message just passing by.');
                 });
-                bot.catch((ctx) => {
-                    Logger.error('Bot unexpected error!', ctx.message);
+                bot.catch((error) => {
+                    Logger.error('Bot unexpected error!', getRedErrorMessage(error));
                 });
                 Logger.goodInfo('Bot protocols: declared!');
             }
@@ -85,8 +85,8 @@ Promise.all([localizerInitPromise, storageInitPromise])
              * Waking up bot.
              */
             if (isStartupSuccessful) {
-                bot!.start().catch((ctx) => {
-                    Logger.error('Bot unexpected error!', ctx.message);
+                bot!.start().catch((error) => {
+                    Logger.error('Bot unexpected error!', getRedErrorMessage(error));
                 });
                 Logger.goodInfo('Bot status: ready and working!');
                 Logger.info('Bot started in', new Date().getTime() - startTime, 'ms');

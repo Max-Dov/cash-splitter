@@ -1,5 +1,5 @@
-import chalk, {bgRed} from 'chalk';
-import {Logger} from '@utils';
+import chalk from 'chalk';
+import {getRedErrorMessage, Logger} from '@utils';
 import {ChatCommands} from '@constants';
 import {BotCommandAction, CommandHandler} from '@models';
 
@@ -21,7 +21,7 @@ export const prepareBotCommandAction = (
             } catch (error) {
                 Logger.error(
                     `Something went wrong while processing ${chalk.bgRed(command)} chat command!`,
-                    bgRed((error as Error).message),
+                    getRedErrorMessage(error),
                 );
             }
         },

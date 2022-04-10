@@ -1,6 +1,6 @@
 import {Context} from 'grammy';
 import {bgGray, bgRed} from 'chalk';
-import {Logger} from '@utils';
+import {getRedErrorMessage, Logger} from '@utils';
 
 export const deleteMessage = (messageId: number, chatId: number, ctx: Context, note: string = ''): Promise<true> => {
     const promise = ctx.api.deleteMessage(chatId as number, messageId as number);
@@ -13,7 +13,7 @@ export const deleteMessage = (messageId: number, chatId: number, ctx: Context, n
             Logger.error(
                 `Could not delete message ${bgRed(messageId)} from chat ${bgRed(chatId)}`,
                 note ? `(${note})` : '',
-                bgRed(error.message),
+                getRedErrorMessage(error),
             );
         });
     return promise;
