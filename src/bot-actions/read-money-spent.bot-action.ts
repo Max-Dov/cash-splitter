@@ -4,7 +4,7 @@ import {
     getOrCreateParty, getRedErrorMessage,
     Localizer,
     Logger,
-    prepareBotAction,
+    prepareBotAction, refreshSummaryMessage,
     saveMessageAsProcessed,
     Storage,
     verifyCtxFields
@@ -48,7 +48,8 @@ export const readMoneySpentBotActionCreator = (): BotAction | never => {
             verifyCtxFields({chatId, senderUsername, messageId}, ctx);
 
             // extract party members
-            const partyMembers = getOrCreateParty(chatId as number).partyMembers;
+            const chat = getOrCreateParty(chatId as number);
+            const partyMembers = chat.partyMembers;
 
             // extract spender
             // TODO trim "via regexp"; fix regexp groups to not include space
@@ -121,7 +122,9 @@ export const readMoneySpentBotActionCreator = (): BotAction | never => {
                 member.totalOwed[currency] = (member.totalOwed[currency] || 0) + owedAmount;
             }
             saveMessageAsProcessed(messageId as number, chatId as number);
-            Storage.saveStorage().catch(error => Logger.error('Could not write to storage file.', getRedErrorMessage(error)));
+            Storage.saveStorage()
+                .catch(error => Logger.error('Could not write to storage file.', getRedErrorMessage(error)))
+                .then(() => refreshSummaryMessage(ctx, chat));
         },
         regexpCommand
     );

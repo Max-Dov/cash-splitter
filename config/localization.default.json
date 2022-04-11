@@ -6,12 +6,13 @@
   },
   "messages": {
     "COUNT_MONEY_RESPONSE": "Okay boss, figuring out money split..",
-    "COUNT_MONEY_RESULTS": "That is what I have got:\n{partyCashback}\nThat is it!",
+    "COUNT_MONEY_RESULTS": "That is what I have got:\n\n{partyCashback}\n\nThat is it!",
+    "SUMMARY_MESSAGE": "Summary ({date}):\n\n{summary}\n\n",
     "SET_SHARE_RESPONSE": "Got it! {username} share set to {share}",
     "ADD_MONEY_SPENT_RESPONSE": "Got it! {username} well spent {spentAmount}",
-    "USERNAME_SHOULD_PAY_TO_GROUP": "{username} should pay {cashin} to group",
-    "USERNAME_GETS_CASHBACK_FROM_GROUP": "{username} gets {cashback} from group",
-    "ITEMS_SPEND_MONEY_ON": "Items spend money on: {items}",
+    "USERNAME_SHOULD_PAY_TO_GROUP": "{username} owes {cashin} to group;",
+    "USERNAME_GETS_CASHBACK_FROM_GROUP": "{username} gets {cashback} from group;",
+    "ITEMS_SPEND_MONEY_ON": "Items spend money on: {items}.",
     "USERNAME_IS_EVEN_WITH_EVERYONE": "{username} is even with everyone!",
     "NOTHING_POSTED_IN_CHAT_YET": "Hey, there's nothing in chat posted yet.."
   }
