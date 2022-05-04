@@ -6,7 +6,7 @@ import {BotMessagesKeys} from '@constants';
 /**
  * Generates payout string for every party member. E.g. "Max owes 25 $ to group (pizza, theater tickets)".
  */
-export const getPartyPayouts = (party: Party): string =>
+export const getPartyPayouts = (party: Party, shouldDisplayItemsSpentMoneyOn: boolean = true): string =>
     Object.entries(party.partyMembers).map(([username, member]) => {
         const {payoutCurrencyName, supportedCurrencies} = Storage.storage;
         /**
@@ -49,13 +49,17 @@ export const getPartyPayouts = (party: Party): string =>
                 BotMessagesKeys.USERNAME_GETS_CASHBACK_FROM_GROUP,
                 {username, cashback: `${payoutAmount} ${payoutCurrencyName}`}
             );
-            message += '\n' + Localizer.message(BotMessagesKeys.ITEMS_SPEND_MONEY_ON, {items});
+            if (shouldDisplayItemsSpentMoneyOn) {
+                message += '\n' + Localizer.message(BotMessagesKeys.ITEMS_SPEND_MONEY_ON, {items});
+            }
         } else if (payoutAmount < 0) {
             message = Localizer.message(
                 BotMessagesKeys.USERNAME_SHOULD_PAY_TO_GROUP,
                 {username, cashin: `${-payoutAmount} ${payoutCurrencyName}`}
             );
-            message += '\n' + Localizer.message(BotMessagesKeys.ITEMS_SPEND_MONEY_ON, {items});
+            if (shouldDisplayItemsSpentMoneyOn) {
+                message += '\n' + Localizer.message(BotMessagesKeys.ITEMS_SPEND_MONEY_ON, {items});
+            }
         } else {
             message = Localizer.message(
                 BotMessagesKeys.USERNAME_IS_EVEN_WITH_EVERYONE,

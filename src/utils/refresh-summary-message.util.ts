@@ -10,7 +10,7 @@ export const refreshSummaryMessage = (ctx: Context, party: Party): void => {
     const summaryMessageId = party.summaryMessageId;
     if (!summaryMessageId) return;
     const summaryMessage = Localizer.message(BotMessagesKeys.SUMMARY_MESSAGE, {
-        summary: getPartyPayouts(party),
+        summary: getPartyPayouts(party, false),
         date: new Date().toDateString(),
     });
     ctx.api.editMessageText(party.chatId, summaryMessageId, summaryMessage)
